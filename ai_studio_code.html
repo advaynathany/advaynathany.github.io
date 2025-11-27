@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advay Nathany | The Portfolio</title>
+    
+    <!-- Fonts: Playfair Display (Editorial) & Space Grotesk (Tech) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --bg: #F2F0E9; /* Bone White */
+            --text: #111111; /* Obsidian */
+            --accent: #D94F38; /* Burnt Orange */
+            --green: #2A4C3B; /* Forest Green */
+            --font-main: 'Playfair Display', serif;
+            --font-tech: 'Space Grotesk', sans-serif;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Custom Cursor Active */ }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-tech);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 2. NOISE TEXTURE --- */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 999;
+        }
+
+        /* --- 3. CUSTOM CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background: var(--text); }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid var(--text);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* Hover State */
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(217, 79, 56, 0.1);
+            border-color: var(--accent);
+        }
+
+        /* --- 4. TYPOGRAPHY --- */
+        .display-text {
+            font-family: var(--font-main);
+            font-size: clamp(3rem, 8vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+        
+        .mono-label {
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        /* --- 5. NAV --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 2rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; mix-blend-mode: exclusion; color: #fff;
+        }
+        .logo { font-family: var(--font-main); font-weight: 700; font-size: 1.5rem; }
+        
+        /* --- 6. HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        
+        .hero-content { text-align: center; z-index: 2; position: relative; }
+        
+        .hero-reveal { overflow: hidden; }
+        .hero-reveal span {
+            display: block;
+            transform: translateY(100%);
+            opacity: 0;
+            animation: textReveal 1.2s var(--ease) forwards;
+        }
+        .hero-reveal span:nth-child(1) { animation-delay: 0.1s; }
+        .hero-reveal span:nth-child(2) { animation-delay: 0.25s; font-style: italic; color: var(--accent); }
+        
+        .hero-sub {
+            margin-top: 2rem; opacity: 0;
+            animation: fadeIn 1s ease forwards 1s;
+            font-size: 1.1rem;
+        }
+
+        /* Doodle in Hero */
+        .doodle-arrow {
+            position: absolute; bottom: -60px; right: -80px; width: 100px;
+            transform: rotate(-10deg);
+            opacity: 0; animation: fadeIn 1s forwards 1.5s;
+        }
+
+        /* --- 7. MARQUEE --- */
+        .marquee-wrapper {
+            background: var(--text); color: var(--bg);
+            padding: 3rem 0; transform: rotate(-2deg) scale(1.05);
+            margin: 5rem 0; overflow: hidden;
+        }
+        .marquee-track {
+            display: flex; gap: 4rem; width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+        .marquee-item {
+            font-family: var(--font-main); font-size: 3rem; font-style: italic;
+        }
+        .marquee-item span {
+            font-family: var(--font-tech); font-size: 1rem; font-style: normal;
+            border: 1px solid var(--bg); border-radius: 50px; padding: 5px 15px; vertical-align: middle; margin: 0 10px;
+        }
+
+        /* --- 8. STORY SECTION --- */
+        .section-padding { padding: 10vh 5%; }
+        
+        .story-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+        }
+        
+        .story-img {
+            width: 100%; height: 600px; object-fit: cover;
+            border-radius: 4px; filter: grayscale(100%); transition: 0.5s;
+        }
+        .story-img:hover { filter: grayscale(0%); }
+        
+        .story-text p { font-size: 1.5rem; line-height: 1.5; margin-bottom: 2rem; }
+        
+        .highlight-doodle { position: relative; display: inline-block; color: var(--accent); }
+        .doodle-underline {
+            position: absolute; bottom: -10px; left: 0; width: 100%;
+            height: 15px; fill: none; stroke: var(--text); stroke-width: 2;
+        }
+
+        /* --- 9. RESEARCH & PROJECTS --- */
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        
+        .card {
+            background: #fff; border: 1px solid rgba(0,0,0,0.1);
+            padding: 2rem; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        
+        .card-cat { font-size: 0.7rem; text-transform: uppercase; color: #888; margin-bottom: 1rem; }
+        .card h3 { font-family: var(--font-main); font-size: 2rem; margin-bottom: 1rem; line-height: 1.1; }
+        .card p { font-size: 0.9rem; color: #555; line-height: 1.6; }
+        
+        .card-star {
+            position: absolute; top: 10px; right: 10px; width: 30px; opacity: 0; transition: 0.3s;
+        }
+        .card:hover .card-star { opacity: 1; transform: rotate(90deg); }
+
+        /* --- 10. TEDx SECTION --- */
+        .tedx {
+            background-color: #0a0a0a; color: #fff; margin: 5rem 0;
+        }
+        .tedx-container {
+            display: grid; grid-template-columns: 40% 60%;
+        }
+        .tedx-text { padding: 5rem; display: flex; flex-direction: column; justify-content: center; }
+        .tedx-video { position: relative; width: 100%; min-height: 400px; background: #1a1a1a; }
+        .tedx-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* --- 11. FOOTER --- */
+        footer {
+            padding: 10vh 5%; text-align: center; border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        .footer-grid {
+            display: flex; justify-content: center; gap: 3rem; margin: 3rem 0;
+        }
+        .footer-link {
+            font-size: 1.2rem; position: relative;
+        }
+        .footer-link::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--accent); transition: 0.3s;
+        }
+        .footer-link:hover::after { width: 100%; }
+        .footer-link:hover { color: var(--accent); }
+
+        /* --- KEYFRAMES --- */
+        @keyframes textReveal { to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .display-text { font-size: 3.5rem; }
+            .story-grid, .tedx-container { grid-template-columns: 1fr; }
+            .story-img { height: 300px; }
+            .tedx-text { padding: 2rem; }
+            .tedx-video { min-height: 300px; }
+            .doodle-arrow { display: none; }
+        }
+    </style>
+</head>
+<body class="hover-target">
+
+    <!-- NOISE OVERLAY -->
+    <div class="noise-overlay"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">AN.</div>
+        <div>
+            <a href="#contact" class="hover-trigger">MENU</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="display-text hero-reveal">
+                <span>ADVAY</span>
+                <span>NATHANY</span>
+            </h1>
+            <p class="hero-sub">STUDENT · RESEARCHER · CHANGEMAKER</p>
+            
+            <!-- Hand Drawn Arrow SVG -->
+            <svg class="doodle-arrow" viewBox="0 0 100 100" style="overflow:visible">
+                <path d="M10,10 Q50,50 50,90" fill="none" stroke="#111" stroke-width="2" />
+                <path d="M40,80 L50,90 L60,80" fill="none" stroke="#111" stroke-width="2" />
+                <text x="60" y="80" font-family="cursive" font-size="14">my story</text>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SCROLLING MARQUEE -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            <div class="marquee-item">Travel Junkie <span>Google Earth Engine</span> Social Impact <span>Startups</span> Climate Action <span>Leadership</span></div>
+            <!-- Duplicate for loop -->
+            <div class="marquee-item">Travel Junkie <span>Google Earth Engine</span> Social Impact <span>Startups</span> Climate Action <span>Leadership</span></div>
+        </div>
+    </div>
+
+    <!-- STORY SECTION -->
+    <section class="section-padding">
+        <div class="story-grid">
+            <img src="https://images.unsplash.com/photo-1502014822147-1aed80671e0a?q=80&w=1000&auto=format&fit=crop" class="story-img hover-trigger" alt="Satellite View">
+            
+            <div class="story-text">
+                <span class="mono-label">The Origin</span>
+                <p>I’ve always been a <span class="highlight-doodle">Travel Junkie
+                    <svg class="doodle-underline" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M0,10 Q50,20 100,10" vector-effect="non-scaling-stroke" />
+                    </svg>
+                </span>. But the more I saw of the world, the more I understood its fragility.</p>
+                
+                <p>What started as curiosity turned into a mission. Today, I use <b>Google Earth Engine</b> and satellite imagery to decode environmental patterns. I code the planet to save it.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEDx SECTION -->
+    <section class="tedx">
+        <div class="tedx-container">
+            <div class="tedx-text">
+                <span class="mono-label" style="color: #fff; opacity: 0.7;">The Voice</span>
+                <h2 style="font-family: var(--font-main); font-size: 3rem; margin-bottom: 1rem;">Ideas Worth Spreading.</h2>
+                <p style="opacity: 0.8; margin-bottom: 2rem;">"We cannot solve 21st-century climate problems with 20th-century thinking."</p>
+                <a href="#" class="hover-trigger" style="border-bottom: 1px solid #fff; display: inline-block;">Watch the Talk →</a>
+            </div>
+            <div class="tedx-video">
+                <!-- Placeholder for TEDx Video -->
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" title="TEDx" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK SECTION -->
+    <section class="section-padding" style="background: #EAE8E0;">
+        <span class="mono-label">The Laboratory</span>
+        <h2 class="display-text" style="font-size: 4rem;">Selected Work</h2>
+        
+        <div class="card-grid">
+            <!-- Project 1 -->
+            <a href="https://earthmag.github.io" target="_blank" class="card hover-trigger">
+                <span class="card-cat">Development</span>
+                <h3>earthmag.github.io</h3>
+                <p>My digital garden. A collection of climate visualizations and environmental stories told through code.</p>
+                <!-- Star Doodle -->
+                <svg class="card-star" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </a>
+
+            <!-- Project 2 -->
+            <div class="card hover-trigger">
+                <span class="card-cat">Research</span>
+                <h3>Global UHI Observatory</h3>
+                <p>Mapping Urban Heat Islands using satellite data. Visualizing invisible heat dangers to assist city planning.</p>
+                <svg class="card-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="card hover-trigger">
+                <span class="card-cat">Startup Concept</span>
+                <h3>ParticiPlan</h3>
+                <p>Democratizing urban design. Empowering citizens to co-design their neighborhoods through an interactive platform.</p>
+                <svg class="card-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            
+             <!-- Paper 1 -->
+             <div class="card hover-trigger">
+                <span class="card-cat">Publication</span>
+                <h3>Algorithmic Climate Adaptation</h3>
+                <p>Research paper detailing machine learning approaches to predicting micro-climate shifts.</p>
+                <svg class="card-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <span class="mono-label">Connect</span>
+        <h2 style="font-family: var(--font-main); font-size: 3rem; margin-bottom: 2rem;">Let's build the future.</h2>
+        
+        <div class="footer-grid">
+            <a href="mailto:advaynathany.cis@gmail.com" class="footer-link hover-trigger">Email</a>
+            <a href="https://www.linkedin.com/in/advaynathany" class="footer-link hover-trigger">LinkedIn</a>
+            <a href="https://www.instagram.com/advaynathany" class="footer-link hover-trigger">Instagram</a>
+        </div>
+        
+        <p style="color: #999; font-size: 0.8rem;">+91 98364 24789</p>
+        <p style="color: #ccc; font-size: 0.8rem; margin-top: 2rem;">© 2024 Advay Nathany.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with slight delay (animation in CSS)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add 'hovering' class to body when over interactive elements
+        hoverTriggers.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            link.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+        // 2. Smooth Reveal on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        // Apply to cards and text
+        document.querySelectorAll('.card, .story-text p').forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(30px)";
+            el.style.transition = "all 0.6s ease-out";
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
