@@ -68,6 +68,7 @@ function page(p, group, kind) {
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE}/assets/advay.jpg">
 <meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-96.png" sizes="96x96" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
