@@ -317,10 +317,10 @@ dialog.cmd::backdrop{background:rgba(10,10,10,.3);backdrop-filter:blur(2px)}
     </div>
     <div class="grid" id="projects"><article><h3><a href="/aristotle/">Aristotle</a></h3><p>Put a real decision to the people you trust, and get an answer reasoned from their own words, every claim cited.</p></article><article><h3><a href="/sidecar/">Sidecar</a></h3><p>An ambient desk display for a tiny projector, with a pixel companion you can talk to.</p></article><article><h3><a href="/basin-ledger/">basin-ledger</a></h3><p>An independent satellite methane ledger for oil and gas basins, where every number carries a measured error rate.</p></article><article><h3><a href="/tapestry/">Tapestry</a></h3><p>Tells mid-size Indian manufacturers why parts get rejected, what each cause costs in rupees, and whether the fix worked.</p></article><article><h3><a href="/participlan/">ParticiPlan</a></h3><p>Rural infrastructure built with communities, not for them. Survey, cost and build, then hand the method to others.</p></article><article><h3><a href="/earthmag/">EarthMag</a></h3><p>An open, global hub for interdisciplinary environmental research, where climate work is published, read and connected.</p></article></div>
     <div class="minis rv">
-      <a href="https://github.com/advaynathany/starcycle" target="_blank" rel="noopener"><b>Starcycle ↗</b><span>Life cycle of a star, visualised for IB Physics HL</span></a>
-      <a href="https://github.com/advaynathany/journi" target="_blank" rel="noopener"><b>Journi ↗</b><span>Daily journalling prompts</span></a>
-      <div><b>Morning</b><span>Boot-time brief and routine tracker for my Mac</span></div>
-      <div><b>Jarvis</b><span>Control the computer with hand gestures (MediaPipe)</span></div>
+      <a href="/rung/"><b>Rung ↗</b><span>Find each child's reading level by voice, then teach from there</span></a>
+      <a href="/billfold/"><b>Billfold ↗</b><span>Free invoice generator, PDF in 30 seconds</span></a>
+      <a href="https://github.com/advaynathany/alphaclash" target="_blank" rel="noopener"><b>AlphaClash ↗</b><span>Game-playing agent on a real phone: YOLO perception toward RL</span></a>
+      <a href="https://github.com/advaynathany/jarvis" target="_blank" rel="noopener"><b>Jarvis ↗</b><span>Control the computer with hand gestures (MediaPipe)</span></a>
     </div>
   </section>
 
@@ -454,7 +454,7 @@ const PROJECTS = [
      'Background tasks run under a written permission policy: anything that sends, deletes or touches the network after reading email has to ask first, as a guard against prompt injection.',
      'Pulls coursework from bCourses and pushes reminders to my phone.'
    ],
-   links:[]},
+   links:[['Source on GitHub','https://github.com/advaynathany/sidecar',true]]},
 
   {id:'basin-ledger', title:'basin-ledger', year:'2026', status:['dev','Research build'], cat:['climate','research'],
    line:'An independent satellite methane ledger for oil and gas basins, where every number carries a measured error rate.',
@@ -468,9 +468,10 @@ const PROJECTS = [
    points:[
      'Point sources from Sentinel-2 and Landsat SWIR (20 m), basin totals from Sentinel-5P TROPOMI (7 km), flaring from VIIRS Nightfire (750 m).',
      'Found that pixel-level Benjamini–Hochberg fires on 57% of pure-noise scenes once noise is spatially correlated, as real retrieval noise always is. A cluster-level test brings that to 0%.',
-     '3,000+ lines behind a 92-test suite. The numerical core has no Earth Engine dependency, so the physics is testable offline.'
+     '5,000+ lines behind a 156-test suite. The numerical core has no Earth Engine dependency, so the physics is testable offline.',
+     'A local web workbench for analysts: map with satellite imagery and enhancement overlays, plume attribution, facility ranking by detection frequency, analyst review kept apart from the measurement, and reproducible runs with hashed inputs.'
    ],
-   links:[]},
+   links:[['Source on GitHub','https://github.com/advaynathany/basin-ledger',true]]},
 
   {id:'tapestry', title:'Tapestry', year:'2026', status:['dev','In development'], feature:true, cat:['venture','ai'],
    line:'Tells mid-size Indian manufacturers why parts get rejected, what each cause costs in rupees, and whether the fix worked.',
